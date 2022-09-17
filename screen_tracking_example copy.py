@@ -2,7 +2,7 @@
 Display a gaze marker inside a screen.
 Demonstates how to create a window which displays markers and map gaze data into the given window
 '''
-
+import csv
 import math
 import sys
 from collections import deque
@@ -115,7 +115,7 @@ class Frontend:
             print('Backend connected')
 
             # Sets the GAZE_IN_SCREEN data stream rate to 125Hz
-            self._api.set_stream_control(adhawkapi.PacketType.GAZE_IN_SCREEN, 125, callback=(lambda *args: None))
+            self._api.set_stream_control(adhawkapi.PacketType.GAZE_IN_SCREEN, 60, callback=(lambda *args: None))
 
             # Tells the api which event streams we want to tap into, in this case the PROCEDURE_START_END stream
             self._api.set_event_control(adhawkapi.EventControlBit.PRODECURE_START_END, 1, callback=(lambda *args: None))
@@ -185,12 +185,12 @@ class TrackingWindow(QtWidgets.QWidget):
 
         # Text instruction layer / widget
         text_label = QtWidgets.QLabel()
-        text_label.setText('ESC: Exit\nQ: Run a Quick Start\nC: Run a Calibration')
+        text_label.setText('')
         text_label.setAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
 
         # Example background layer / widget
         background_widget = QtWidgets.QLabel()
-        background_widget.setStyleSheet("background-color:lightblue")
+        background_widget.setPixmap(QtGui.QPixmap('menu3.jpg'))
 
         layout = QtWidgets.QGridLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -225,16 +225,31 @@ class TrackingWindow(QtWidgets.QWidget):
         self._xcoord = None
         self._ycoord = None
 
+        self.region1 = 0
+        self.region2 = 0
+        self.region3 = 0
+        self.region4 = 0
+        self.region5 = 0
+        self.region6 = 0
+        self.region7 = 0
+        self.region8 = 0
+
         # Creates the Frontend object
         self.frontend = Frontend(self._handle_camera_start_response, self._handle_gaze_in_screen_stream)
 
         self._setup_video_timer()
+
 
     def _setup_video_timer(self):
         self._imagetimer_interval = 1000 / 60
         self._imagetimer = QtCore.QTimer()
         self._imagetimer.timeout.connect(self._every_frame)
         self._imagetimer.start(self._imagetimer_interval)
+
+    def _compute_percents(self):
+        np.sum(self._storage, axis=0) / np.sum(self._storage, axis=0)
+        
+            
 
     def _handle_gaze_in_screen_stream(self, _timestamp, xpos, ypos):
         ''' Handler for the gaze in screen stream '''
@@ -259,6 +274,51 @@ class TrackingWindow(QtWidgets.QWidget):
 
         self._xcoord = self._running_xcoord / len(self._point_deque)
         self._ycoord = self._running_ycoord / len(self._point_deque)
+                # prints the x and y coordinates
+        
+        if (xpos < 0.25) & (ypos < 0.5):
+            self.region1 += 1
+        elif ((xpos > 0.25) & (xpos < 0.50)) & (ypos < 0.5):
+            self.region2 += 1
+        elif ((xpos > 0.50) & (xpos < 0.75)) & (ypos < 0.5):
+            self.region3 += 1
+        elif ((xpos > 0.75) & (ypos < 0.5)):
+            self.region4 += 1
+        if (xpos < 0.25) & (ypos > 0.5):
+            self.region5 += 1
+        elif ((xpos > 0.25) & (xpos < 0.50)) & (ypos > 0.5):
+            self.region6 += 1
+        elif ((xpos > 0.50) & (xpos < 0.75)) & (ypos > 0.5):
+            self.region7 += 1
+        elif ((xpos > 0.75)) & (ypos > 0.5):
+            self.region8 += 1
+
+
+        
+        
+        totalcount = self.region1 + self.region2 + self.region3 + self.region4 +self.region5 +self.region6 +self.region7 +self.region8
+        percent1 = self.region1/totalcount
+        percent2 = self.region2/totalcount
+        percent3 = self.region3/totalcount
+        percent4 = self.region4/totalcount
+        percent5 = self.region5/totalcount
+        percent6 = self.region6/totalcount
+        percent7 = self.region7/totalcount
+        percent8 = self.region8/totalcount
+
+        print(f"x is {xpos}, and y is {ypos}")
+
+        print(percent1, percent2, percent3, percent4, percent5, percent6, percent7, percent8)
+
+        f = open("demofile3.txt", "w")
+        f.write(f"{int(round(percent1, 2)*100)}, {int(round(percent2, 2)*100)}, {int(round(percent3, 2)*100)}, {int(round(percent4, 2)*100)}, {int(round(percent5, 2)*100)}, {int(round(percent6, 2)*100)}, {int(round(percent7, 2)*100)}, {int(round(percent8, 2)*100)}")
+        f.close()
+
+
+
+
+    
+
 
     def _every_frame(self):
         if not self._xcoord or not self._ycoord:
