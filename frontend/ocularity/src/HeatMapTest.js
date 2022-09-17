@@ -4,8 +4,8 @@ import HeatMap from "react-heatmap-grid";
 
 
 function HeatMapT() {
-  const xLabels = new Array(4).fill(0).map((_, i) => `${i}`);
-  const yLabels = [" ", " ", " "];
+  const xLabels = new Array(4).fill(" ");
+  const yLabels = new Array(3).fill(" ");
   const data = new Array(yLabels.length)
     .fill(0)
     .map(() =>
