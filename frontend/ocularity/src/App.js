@@ -1,11 +1,17 @@
 import logo from './logo.svg';
 import './App.css';
+<<<<<<< HEAD
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
+=======
+import HeatMapT from './HeatMapTest';
+
+>>>>>>> 63bab908552c80ee31d4359a3320f57eec3830e5
 
 function App() {
   return (
     <div className="App">
+<<<<<<< HEAD
       	<aside class="col-12 col-md-2 p-0 flex-shrink-1">
 					<nav
 						class="navbar navbar-expand-md flex-md-column flex-row align-items-end text-center text-md-end p-3 p-md-0 sticky-top"
@@ -96,6 +102,9 @@ function App() {
 						</ul>
 					</nav>
 				</aside>
+=======
+      <HeatMapT />
+>>>>>>> 63bab908552c80ee31d4359a3320f57eec3830e5
     </div>
   );
 }
