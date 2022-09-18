@@ -19,6 +19,14 @@ import adhawkapi
 import adhawkapi.frontend
 from adhawkapi.publicapi import Events, MarkerSequenceMode, PacketType
 
+percent1 = 0
+percent2 = 0
+percent3 = 0
+percent4 = 0
+percent5 = 0
+percent6 = 0
+percent7 = 0
+percent8 = 0
 
 GAZE_MARKER_SIZE = 20
 
@@ -248,8 +256,7 @@ class TrackingWindow(QtWidgets.QWidget):
 
     def _compute_percents(self):
         np.sum(self._storage, axis=0) / np.sum(self._storage, axis=0)
-        
-            
+
 
     def _handle_gaze_in_screen_stream(self, _timestamp, xpos, ypos):
         ''' Handler for the gaze in screen stream '''
@@ -275,7 +282,7 @@ class TrackingWindow(QtWidgets.QWidget):
         self._xcoord = self._running_xcoord / len(self._point_deque)
         self._ycoord = self._running_ycoord / len(self._point_deque)
                 # prints the x and y coordinates
-        
+
         if (xpos < 0.25) & (ypos < 0.5):
             self.region1 += 1
         elif ((xpos > 0.25) & (xpos < 0.50)) & (ypos < 0.5):
@@ -294,8 +301,8 @@ class TrackingWindow(QtWidgets.QWidget):
             self.region8 += 1
 
 
-        
-        
+
+
         totalcount = self.region1 + self.region2 + self.region3 + self.region4 +self.region5 +self.region6 +self.region7 +self.region8
         percent1 = self.region1/totalcount
         percent2 = self.region2/totalcount
@@ -317,7 +324,7 @@ class TrackingWindow(QtWidgets.QWidget):
 
 
 
-    
+
 
 
     def _every_frame(self):
@@ -424,6 +431,18 @@ def main():
     TrackingWindow()
     sys.exit(app.exec_())
 
+from flask import Flask, jsonify
+from flask_cors import CORS, cross_origin
+
+app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+@app.route("/getData")
+def getData():
+    data = {"data": [[percent1, percent2, percent3, percent4],[percent5, percent6, percent7, percent8]]}
+    return jsonify(data) , 200
 
 if __name__ == '__main__':
-    main()
+    app.run(host='localhost', port=3005, debug=True)
+    # main()

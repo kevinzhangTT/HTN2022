@@ -9,7 +9,7 @@ const InfoDiv = () => {
         }}>
             <h1 className='text-center title'>Ocularity</h1>
             <p className='text-center'>
-                With restaurant menus getting larger and featuring more extravagant items, we would like to see if it is worth the effort maintain them using eye-tracking technology.
+                Eye-tracking technology for modern restaurants.
             </p>
         </div>
     )
