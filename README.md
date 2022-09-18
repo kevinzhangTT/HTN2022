@@ -9,4 +9,4 @@ Hack the North 2022 project repository
 * [Kevin Wang](https://github.com/ViridianCitrus)
 * [Kevin Zhang](https://github.com/kevinzhangTT)
 * [Kean Yeung](https://github.com/keanyeung)
-* Anthony Xu
+* [Anthony Xu](https://github.com/hakuuww)
