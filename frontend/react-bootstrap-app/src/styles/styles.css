@@ -1,0 +1,17 @@
+h1 {
+    margin-bottom: 4rem;
+}
+
+p {
+    margin-bottom: 4rem;
+    font-size: x-large;
+}
+
+.content-div {
+    margin: 64px auto 0 auto;
+    width: 60%;
+}
+
+.title {
+    font-size: 75px;
+}
