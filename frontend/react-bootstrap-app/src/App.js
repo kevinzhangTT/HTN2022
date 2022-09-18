@@ -40,7 +40,7 @@ function App() {
 
         <CardGroup>
         <Card>
-          <Card.Img variant="top" src="./images/logo-large.png" />
+          <Card.Img variant="top" src="workspace.jpg/4032px3024" />
           <Card.Body>
             <Card.Title>Card title</Card.Title>
             <Card.Text>
