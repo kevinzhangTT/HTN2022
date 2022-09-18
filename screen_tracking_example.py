@@ -19,14 +19,6 @@ import adhawkapi
 import adhawkapi.frontend
 from adhawkapi.publicapi import Events, MarkerSequenceMode, PacketType
 
-percent1 = 0
-percent2 = 0
-percent3 = 0
-percent4 = 0
-percent5 = 0
-percent6 = 0
-percent7 = 0
-percent8 = 0
 
 GAZE_MARKER_SIZE = 20
 
@@ -304,6 +296,14 @@ class TrackingWindow(QtWidgets.QWidget):
 
 
         totalcount = self.region1 + self.region2 + self.region3 + self.region4 +self.region5 +self.region6 +self.region7 +self.region8
+        global percent1
+        global percent2
+        global percent3
+        global percent4
+        global percent5
+        global percent6
+        global percent7
+        global percent8 
         percent1 = self.region1/totalcount
         percent2 = self.region2/totalcount
         percent3 = self.region3/totalcount
@@ -317,9 +317,9 @@ class TrackingWindow(QtWidgets.QWidget):
 
         print(percent1, percent2, percent3, percent4, percent5, percent6, percent7, percent8)
 
-        f = open("demofile3.txt", "w")
-        f.write(f"{int(round(percent1, 2)*100)}, {int(round(percent2, 2)*100)}, {int(round(percent3, 2)*100)}, {int(round(percent4, 2)*100)}, {int(round(percent5, 2)*100)}, {int(round(percent6, 2)*100)}, {int(round(percent7, 2)*100)}, {int(round(percent8, 2)*100)}")
-        f.close()   
+        # f = open("demofile3.txt", "w")
+        # f.write(f"{int(round(percent1, 2)*100)}, {int(round(percent2, 2)*100)}, {int(round(percent3, 2)*100)}, {int(round(percent4, 2)*100)}, {int(round(percent5, 2)*100)}, {int(round(percent6, 2)*100)}, {int(round(percent7, 2)*100)}, {int(round(percent8, 2)*100)}")
+        # f.close()   
 
 
 
@@ -433,6 +433,7 @@ def main():
 
 from flask import Flask, jsonify
 from flask_cors import CORS, cross_origin
+from threading import Thread
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -443,6 +444,11 @@ def getData():
     data = {"data": [[percent1, percent2, percent3, percent4],[percent5, percent6, percent7, percent8]]}
     return jsonify(data) , 200
 
+
 if __name__ == '__main__':
+    thread = Thread(target = main)
+    thread.start()
     app.run(host='localhost', port=3005, debug=True)
-    # main()
+    
+    
+    
